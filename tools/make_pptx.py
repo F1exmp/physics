@@ -124,9 +124,19 @@ def make_pptx(path, slides, footer="7 класс"):
             _title(sl, s[1])
             fbox = sl.shapes.add_textbox(Inches(0.7), Inches(1.7), W - Inches(1.4), Inches(1.4))
             tf = fbox.text_frame
+            tf.word_wrap = True
             p = tf.paragraphs[0]
             p.text = s[2]
-            p.font.size = Pt(40)
+            text_len = len(s[2])
+            if text_len <= 45:
+                size = 40
+            elif text_len <= 70:
+                size = 32
+            elif text_len <= 95:
+                size = 28
+            else:
+                size = 24
+            p.font.size = Pt(size)
             p.font.bold = True
             p.font.color.rgb = DARK
             p.alignment = 1
@@ -145,9 +155,10 @@ def make_pptx(path, slides, footer="7 класс"):
             if len(s) > 3 and s[3]:
                 abox = sl.shapes.add_textbox(Inches(0.7), Inches(6.2), W - Inches(1.4), Inches(1))
                 tf = abox.text_frame
+                tf.word_wrap = True
                 p = tf.paragraphs[0]
                 p.text = s[3]
-                p.font.size = Pt(24)
+                p.font.size = Pt(24 if len(s[3]) <= 70 else 20)
                 p.font.bold = True
                 p.font.color.rgb = ACCENT
         elif kind == "end":
